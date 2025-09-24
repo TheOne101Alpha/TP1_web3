@@ -9,30 +9,32 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Acceuil</title>
 </head>
+<div class="container">
+    <body>
+        <header class="d-flex justify-content-around bg-info">
+            <a href="index.jinja">{{titre}}</a>
+            <div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a href="index.jinja" class="nav-link">Acceuil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="ajout.jinja" class="nav-link">Ajout/Modification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="details.jinja" class="nav-link">services</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <main class="container-c">
+            {%block main%} {%endblock%}
+        </main>
+        <footer class="bg-info justify-content-around d-flex">
+            <p>Auteur: Yao Pascal Joseph</p>
+            <p>DA: 2445206</p>
+        </footer>
+    </body>
+</div>
 
-<body>
-    <header class="d-flex justify-content-around bg-info">
-        <a href="index.jinja">{{titre}}</a>
-        <div>
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a href="index.jinja" class="nav-link">Acceuil</a>
-                </li>
-                <li class="nav-item">
-                    <a href="ajout.jinja" class="nav-link">Ajout/Modification</a>
-                </li>
-                <li class="nav-item">
-                    <a href="services.jinja" class="nav-link">Services</a>
-                </li>
-            </ul>
-        </div>
-    </header>
-    <main class="container">
-        {%block main%} {%endblock%}
-    </main>
-    <footer class="bg-info justify-content-around d-flex">
-        <p>Auteur: Yao Pascal Joseph</p>
-        <p>DA: 2445206</p>
-    </footer>
-</body>
 </html>

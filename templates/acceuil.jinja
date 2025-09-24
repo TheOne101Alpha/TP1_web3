@@ -1,11 +1,18 @@
 {% extends "base.jinja" %}
 {% block main %}
-<ul>
-    {% for item in list %}
-
-    <li> {{item[1]}} </li>
-
-    {% endfor %}
-</ul>
+    <div class="d-flex flex-wrap">
+        {% for item in items %}
+        <div class="card w-50">
+            <div class="card-header>Derniers services</div>
+            <div class="card-body>
+                <p class="h2 card-title">{{item["titre"]}}</p>
+                <img class="card-text" src="../static/placeholder.png" alt="image placeholder">
+                <p class="card-text"> {{item["nom_categorie"]}} <br> {{item["description"]}} <br> localisation: {{item["localisation"]}}</p>
+                <a href="/details?id={{item["id_service"]}}">Détails</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
 
 {% endblock %}

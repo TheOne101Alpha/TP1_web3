@@ -1,0 +1,28 @@
+{% extends "base.jinja" %}
+
+{% block main %}
+
+<div class="container">
+    <div class="row">
+        <section class="col-4"> 
+            <img src="../img/placeholder.png">
+            <h1>Prix: {{item["cout"]}}$</h1>
+        </section>
+        <section class="col-6"> 
+
+            {%if tiny < 1%}
+            <h1>{{item["titre"]}} <span>(non-actif)</span> </h1>
+            {% else %}
+            <h1>{{item["titre"]}} <span class="text-success">(actif)</span> </h1>
+            {% endif %}
+
+            <p class="h3">{{item["localisation"]}}</p>
+            <p class="h3">{{item["nom_categorie"]}}</p>
+            <p class="h3">{{item["date_creation"]}}<br>{{item["description"]}}</p>
+
+        </section>
+    </div>
+
+</div> 
+
+{% endblock %}
