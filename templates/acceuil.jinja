@@ -1,0 +1,11 @@
+{% extends "base.jinja" %}
+{% block main %}
+<ul>
+    {% for item in list %}
+
+    <li> {{item[1]}} </li>
+
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang={{langue}}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
     <title>Acceuil</title>
 </head>
 <body>
-    <header class="d-flex">
+    <header class="d-flex justify-content-around">
         <a href="index.jinja">{{NomSite}}</a>
         <div>
             <ul class="nav nav-tabs">
@@ -25,6 +25,13 @@
                 </li>
             </ul>
         </div>
+        <main>
+            {%block main%} {%endblock%}
+        </main>
     </header>
+    <footer class="bg-light justify-content-around d-flex">
+        <p>Auteur: Yao Pascal Joseph</p>
+        <p>DA: 2445206</p>
+    </footer>
 </body>
 </html>
