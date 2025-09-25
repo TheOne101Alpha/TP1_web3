@@ -30,12 +30,36 @@ def details():
 
     with bd.creer_connexion() as connexion:
         with connexion.get_curseur() as curseur:
-            curseur.execute('SELECT cat.nom_categorie,ser.titre, ser.actif, ser.description, ser.cout, ser.localisation FROM services ser INNER JOIN categories cat ON cat.id_categorie = ser.id_service WHERE ser.id_service =%(id)s', {'id': identifiant})
+            curseur.execute('SELECT cat.nom_categorie, ser.date_creation, ser.titre, ser.actif, ser.description, ser.cout, ser.localisation FROM services ser INNER JOIN categories cat ON cat.id_categorie = ser.id_service WHERE ser.id_service =%(id)s', {'id': identifiant})
             retour = curseur.fetchone()
 
     print(retour)
-    return render_template("details.jinja", item = retour, tiny = retour["actif"])
+    return render_template("details.jinja", item = retour, id_change = identifiant)
 
+
+@app.route("/changement")
+def changement():
+    """affichage de changement ou ajout de services"""
+
+    services = []
+    categories = []
+
+    identifiant = request.args.get("id", type=int)
+    if identifiant is not None:
+
+        with bd.creer_connexion() as connexion:
+            with connexion.get_curseur() as curseur:
+                curseur.execute('SELECT cat.nom_categorie, ser.date_creation, ser.titre, ser.actif, ser.description, ser.cout, ser.localisation FROM services ser INNER JOIN categories cat ON cat.id_categorie = ser.id_service WHERE ser.id_service =%(id)s', {'id': identifiant})
+                services = curseur.fetchone()
+        return render_template("changement.jinja", b_changement=True, service=services, liste_categorie = None )
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            curseur.execute('SELECT id_categorie, nom_categorie FROM categories')
+            categories = curseur.fetchall()
+            curseur.execute('SELECT cat.nom_categorie, ser.date_creation, ser.titre, ser.actif, ser.description, ser.cout, ser.localisation FROM services ser INNER JOIN categories cat ON cat.id_categorie = ser.id_service WHERE ser.id_service =%(id)s', {'id': identifiant})
+            services = curseur.fetchone()
+    return render_template("changement.jinja", b_changement = False, service = services, liste_categorie = categories)
 
 
 if __name__ == "__main__":

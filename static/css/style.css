@@ -2,19 +2,28 @@
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  border: solid black 5px;
   text-align: center;
 }
 
-.card {
-  border: solid black 2px;
-  margin: 1rem;
-  width: 40%;
+p, label {
+  font-size: 20px;
 }
 
-main a {
-  text-decoration: none;
-  color: black;
+main a:hover .text {
+  color: red;
+}
+
+label {
+  margin-right: 10px;
+}
+
+form div {
+  margin-top: 40px;
+  width: 100%;
+}
+form div input {
+  width: 30%;
+  margin-left: 40px;
 }
 
 img {
