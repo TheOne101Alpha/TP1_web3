@@ -2,15 +2,32 @@
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
+  align-items: center;
 }
 
 p, label {
   font-size: 20px;
+  color: black;
 }
 
 main a:hover .text {
   color: red;
+}
+
+header {
+  height: 50px;
+  background-color: rgb(192, 192, 255);
+}
+header a {
+  color: black;
+}
+
+main .taille {
+  width: 42%;
+}
+
+footer {
+  background-color: rgb(192, 192, 255);
 }
 
 label {

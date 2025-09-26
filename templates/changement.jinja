@@ -1,34 +1,41 @@
-{%extends base.jinnja%}
+{%extends "base.jinja" %}
 {% block main%}
-<form action="/acceuil" method="get">
+<form action="/acceuil" method="post">
     <div class="d-flex justify-content-between ">
-        <label for="nom_service">nom du service: </label>
-        <input type="text" {%if b_changement%} value="{{service["titre"]}}" {%endif%} name="nom_service" id="nom_service" class="text-center">
+        <label for="nom_service">Nom du service: </label>
+        <input type="text" {%if b_changement%} value="{{service["titre"]}}" {%endif%} name="nom_service" id="nom_service" class="text-center" required minlength="1" maxlength="50">
+        <div class="invalid-feedback">Le nom est obligatoire</div>
     </div>
     <div class="d-flex justify-content-between ">
         <label for="choix_categorie">Catégorie: </label>
-        <select name="choix_categorie" id="choix_categorie" {%if b_changement%}required{%endif%}>
+        <select name="choix_categorie" id="choix_categorie" required {%if b_changement%}disabled{%endif%}>
             <option value=""></option>
             {% for categorie in liste_categorie %}
             <option value="{{categorie["id_categorie"]}}">{{categorie["nom_categorie"]}}</option>
             {% endfor %}
         </select>
+        <div class="invalid-feedback">La categorie est obligatoire</div>
     </div>
     <div class="d-flex justify-content-between">
-        <label for="localisation_service">localisation (ville):</label>
-        <input type="text" name="localisation_service" id="localisation_service" class="text-center" {%if b_changement%} value="{{service["localisation"]}}" {%endif%}>
+        <label for="localisation_service">Localisation (ville):</label>
+        <input type="text" name="localisation_service" id="localisation_service" class="text-center" required {%if b_changement%} value="{{service["localisation"]}}" {%endif%}>
+        <div class="invalid-feedback">La localisation est obligatoire</div>
     </div>
     <div class="d-flex justify-content-between">
-        <label for="nom_service">description: </label>
+        <label for="nom_service">Description: </label>
         <input type="text" name="description_service" class="text-center" id="description_service" maxlength="200" {%if b_changement%} value="{{service["description"]}}" {%endif%}>
+        <div class="invalid-feedback">La description est obligatoire</div>
     </div>
     <div class="d-flex justify-content-between">
-        <label for="cout_service">Coût: </label>
-        <input type="text" name="cout_service" id="cout_service" class="chiffre text-center" {%if b_changement%} value="{{service["cout"]}}" {%endif%}>
+        <label for="cout_service">Coût($): </label>
+        <input type="number" name="cout_service" id="cout_service" class="chiffre text-center" step="0.01" {%if b_changement%} value="{{service["cout"]}}" {%endif%}>
+        <div class="invalid-feedback">Le cout est obligatoire</div>
     </div>
     <div class="d-flex justify-content-between">
         <label for="actif_service">Statut: </label>
         <input type="checkbox" name="actif_service" id="actif_service" value="1" {%if b_changement and service["actif"] == 1 %} checked {%endif%}>
     </div>
+    <div><input type="submit" {%if b_changement%}value = "Modifier" {%else%} value="Ajouter" {% endif %}></div>
+
 </form>
 {%endblock%}

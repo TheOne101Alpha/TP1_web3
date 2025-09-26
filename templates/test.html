@@ -17,19 +17,18 @@
         <div>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a href="index.jinja" class="nav-link">Acceuil</a>
+                    <a href="index.jinja" class="nav-link text-black">Acceuil</a>
                 </li>
                 <li class="nav-item">
-                    <a href="ajout.jinja" class="nav-link">Ajout/Modification</a>
+                    <a href="ajout.jinja" class="nav-link text-black">Ajout/Modification</a>
                 </li>
                 <li class="nav-item">
-                    <a href="services.jinja" class="nav-link">Services</a>
+                    <a href="services.jinja" class="nav-link text-black">Services</a>
                 </li>
             </ul>
         </div>
-
     </header>
-    <main class="gap-3">
+    <main class="gap-3 bg-light pt-2 pb-2">
         <!-- <div class="carre">
             <img src="../static/placeholder.png" alt="une image">
             <h1>un titre</h1>
@@ -80,7 +79,7 @@
                 <div class="d-flex justify-content-between">
                     <label for="nom_service">description: </label>
                     <input type="text" name="description_service" class="text-center" id="description_service"
-                        maxlength="200">
+                        maxlength="200" >
                 </div>
                 <div class="d-flex justify-content-between">
                     <label for="cout_service">Coût: </label>
@@ -90,11 +89,12 @@
                     <label for="actif_service">Statut: </label>
                     <input type="checkbox" name="actif_service" id="actif_service">
                 </div>
+                <div><input type="submit" {%if b_changement%}value = "Modifier" {%else%} value="Ajouter" {% endif %}></div>
             </form>
         </div>
 
     </main>
-    <footer class="bg-light justify-content-around d-flex">
+    <footer class="justify-content-around d-flex ">
         <p class="h3">Auteur: Yao Pascal Joseph</p>
         <p>DA: 2445206</p>
     </footer>
