@@ -5,6 +5,10 @@
   align-items: center;
 }
 
+a:hover, main a:hover {
+  background-color: white;
+}
+
 p, label {
   font-size: 20px;
   color: black;
