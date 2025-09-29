@@ -10,8 +10,8 @@ p, label {
   color: black;
 }
 
-main a:hover .text {
-  color: red;
+footer, header {
+  height: 20%;
 }
 
 header {
@@ -22,6 +22,9 @@ header a {
   color: black;
 }
 
+main {
+  height: 60%;
+}
 main .taille {
   width: 42%;
 }
