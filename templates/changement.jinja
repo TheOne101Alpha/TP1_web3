@@ -43,7 +43,6 @@
         <label for="actif_service">Statut: </label>
         <input type="checkbox" name="actif_service" id="actif_service" value="1" {%if service["actif"] == 1 %} checked {%endif%}>
     </div>
-    <div><input type="submit" {%if b_changement%}value = "Modifier" {%else%} value="Ajouter" {% endif %}></div>
-
+    <div><input type="submit" value = "Modifier"></div>
 </form>
 {%endblock%}

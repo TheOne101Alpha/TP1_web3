@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, abort, redirect
 import re
+from datetime import datetime
+from flask import Flask, render_template, request, abort, redirect
 import bd
+
 
 
 
@@ -39,7 +41,7 @@ def details():
             curseur.execute('SELECT cat.nom_categorie, ser.date_creation, ' \
             'ser.titre, ser.actif, ser.description, ser.cout,' \
             ' ser.localisation FROM services ser INNER JOIN' \
-            ' categories cat ON cat.id_categorie = ser.id_service ' \
+            ' categories cat ON cat.id_categorie = ser.id_categorie ' \
             'WHERE ser.id_service =%(id)s', {'id': identifiant})
             retour = curseur.fetchone()
             if not retour:
@@ -60,11 +62,11 @@ def changement():
     v_local=""
     v_descr=""
 
-    nom = request.form.get("nom_service", default= "")
-    localisation = request.form.get("localisation_service", default= "")
-    description = request.form.get("description_service", default= "")
-    actif = request.form.get("actif_service", default= 0, type=int)
-    cout = request.form.get('cout', default=0, type=int)
+    nom = request.form.get("nom_service","")
+    localisation = request.form.get("localisation_service","")
+    description = request.form.get("description_service","")
+    actif = request.form.get("actif_service", 0, type=int)
+    cout = request.form.get('cout', 0, type=float)
 
     identifiant = request.args.get('id', type=int)
 
@@ -82,25 +84,26 @@ def changement():
             return render_template("changement.jinja", titre_page= "changement",
                                    valide_nom = v_nom, valide_localisation = v_local,
                                      valide_description = v_descr)
-        
         # Sinon ajoute les données à la bd à l'aide de update
+        date = datetime.now()
         with bd.creer_connexion() as conn:
             with conn.get_curseur() as curseur:
                 curseur.execute(
-                    'UPDATE services SET titre=%(letitre)s, description=%(ladescription)s, ' \
-                    'localisation=%(lalocalisation)s, actif=%(si_actif)s,' \
-                    ' cout=%(lecout)s WHERE id_service=%(ident)s',
+                    'UPDATE services SET titre= %(letitre)s, description= %(ladescription)s, ' \
+                    'localisation= %(lalocalisation)s,date_creation= %(ladate)s' \
+                    ', actif= %(si_actif)s,cout= %(lecout)s WHERE id_service = %(ident)s',
                     {
                         'letitre': nom,
                         'ladescription': description,
                         'lalocalisation': localisation,
                         'si_actif': actif,
                         'lecout': cout,
+                        'ladate': date,
                         'ident': identifiant
                     }
                 )
-                return redirect("/changement",200)
-    
+                conn.commit()
+                return redirect("/merci_modif", code=303)
     if not identifiant:
         abort(400, "le parametre id est manquant")
 
@@ -111,7 +114,7 @@ def changement():
             curseur.execute('SELECT cat.nom_categorie, ser.date_creation,' \
             ' ser.titre, ser.actif, ser.description, ser.cout, ' \
             'ser.localisation FROM services ser INNER JOIN categories cat ' \
-            'ON cat.id_categorie = ser.id_service WHERE ' \
+            'ON cat.id_categorie = ser.id_categorie WHERE ' \
             'ser.id_service =%(id)s', {'id': identifiant})
             leservice = curseur.fetchone()
             if not leservice:
@@ -145,27 +148,30 @@ def ajout():
         if v_nom or v_local or v_descr:
             # si un des champs est faux
             # retourne sur la même page
-            return render_template("changement.jinja", titre_page= "changement",
+            return render_template("ajout.jinja", titre_page= "ajout",
                                    valide_nom = v_nom, valide_localisation = v_local,
                                      valide_description = v_descr, titre = nom,
                                      local=localisation, description=description,cout = cout)
         # Sinon ajoute les données à la bd à l'aide de INSERT
+        date = datetime.now()
         with bd.creer_connexion() as conn:
             with conn.get_curseur() as curseur:
                 curseur.execute(
-                    'INSERT INTO services VALUES (Null,(SELECT categories.nom_categorie FROM categories WHERE categories.id_categorie=%(categorie_id)s),%(letitre)s,%(ladescription)s, ' \
-                    '%(lalocalisation)s,Null,%(si_actif)s,' \
-                    ' cout=%(lecout)s), Null',
+                    'INSERT INTO services VALUES (NULL,%(categorie_id)s,%(letitre)s,'
+                    '%(ladescription)s,%(lalocalisation)s,%(ladate)s,'
+                    '%(si_actif)s,%(lecout)s, NULL)',
                     {
                         'letitre': nom,
                         'ladescription': description,
                         'lalocalisation': localisation,
+                        'ladate': date,
                         'categorie_id': categorie,
                         'si_actif': actif,
                         'lecout': cout,
                     }
                 )
-                return redirect("/merci_modif", code=200)
+                conn.commit()
+                return redirect("/merci_modif", code=303)
     with bd.creer_connexion() as connexion:
         with connexion.get_curseur() as curseur:
             curseur.execute("SELECT id_categorie, nom_categorie FROM categories")
@@ -184,7 +190,6 @@ def services():
             "= services.id_categorie), titre, localisation, " \
             "description FROM `services` ORDER BY services.date_creation")
             retour = curseur.fetchall()
-    print(retour)
     return render_template('services.jinja',titre_page = "Services", lesservices=retour)
 
 @app.route("/merci_modif")
