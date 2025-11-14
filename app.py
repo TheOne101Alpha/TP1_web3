@@ -1,8 +1,15 @@
+"""TP2 WEB"""
+
 import re
 from datetime import datetime
 from flask import Flask, render_template, request, abort, redirect, session, flash
 from modules.compte import bp_compte
 import bd
+
+from gestion_services import bp_gestion_services
+
+
+
 
 
 reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")

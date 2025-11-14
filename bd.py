@@ -59,7 +59,7 @@ def add_compte(nom, mdp, role):
 
 
 def get_comptes():
-    """retournes tous les comptes dans la bases de données"""
+    """retournes tous les comptes dans la base de données"""
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             unevar = 'admin@garneau.ca'
