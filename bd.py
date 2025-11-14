@@ -61,3 +61,28 @@ def add_compte(nom, mdp, role):
 
 def get_comptes():
     """reto"""
+
+    
+def get_service(conn, id_service):
+    """Retourne un service"""
+    retour = []
+
+    with conn.get_curseur() as curseur:
+        curseur.execute('SELECT cat.nom_categorie, ser.date_creation, ' \
+        'ser.titre, ser.actif, ser.description, ser.cout,' \
+        ' ser.localisation FROM services ser INNER JOIN' \
+        ' categories cat ON cat.id_categorie = ser.id_categorie ' \
+        'WHERE ser.id_service =%(id)s', {'id': id_service})
+        retour = curseur.fetchone()
+        
+        return retour
+
+def get_services():
+    """Retourne tous les services de la bd"""
+    with creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            curseur.execute("SELECT id_service, (SELECT nom_categorie FROM " \
+            "`categories` WHERE categories.id_categorie " \
+            "= services.id_categorie), titre, localisation, " \
+            "description FROM `services` ORDER BY services.date_creation")
+            return curseur.fetchall()

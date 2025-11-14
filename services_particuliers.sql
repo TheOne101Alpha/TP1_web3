@@ -91,8 +91,7 @@ INSERT INTO `services` (`id_service`, `id_categorie`, `titre`, `description`, `l
 (17, 5, 'Cours de mathématiques', 'Soutien scolaire en mathématiques niveau secondaire et collégial.', 'Sherbrooke', '2025-09-24 22:53:17', 1, 35.00, 'cours_math.jpg'),
 (18, 5, 'Cours de français', 'Aide en grammaire, lecture et rédaction pour élèves du secondaire.', 'Montréal', '2025-09-24 22:53:17', 1, 30.00, 'cours_francais.jpg'),
 (19, 5, 'Cours d’anglais', 'Cours de conversation et grammaire anglaise pour débutants.', 'Québec', '2025-09-24 22:53:17', 1, 40.00, 'cours_anglais.jpg'),
-(20, 5, 'Cours de guitare', 'Leçons individuelles de guitare acoustique ou électrique.', 'Trois-Rivières', '2025-09-24 22:53:17', 1, 50.00, 'cours_guitare.jpg'),
-(21, 1, 'un service', 'je teste l\'ajout', 'Québec', '2025-09-29 21:05:05', 1, 25.00, NULL);
+(20, 5, 'Cours de guitare', 'Leçons individuelles de guitare acoustique ou électrique.', 'Trois-Rivières', '2025-09-24 22:53:17', 1, 50.00, 'cours_guitare.jpg');
 
 --
 -- Contraintes pour les tables déchargées
@@ -101,6 +100,7 @@ INSERT INTO `services` (`id_service`, `id_categorie`, `titre`, `description`, `l
 --
 -- Contraintes pour la table `services`
 --
+
 ALTER TABLE `services`
   ADD CONSTRAINT `services_ibfk_1` FOREIGN KEY (`id_categorie`) REFERENCES `categories` (`id_categorie`);
 COMMIT;

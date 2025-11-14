@@ -1,12 +1,21 @@
+"""TP2 WEB"""
+
 import re
 from datetime import datetime
-from flask import Flask, render_template, request, abort, redirect, session
+from flask import Flask, render_template, request, abort, redirect
 import bd
+
+from gestion_services import bp_gestion_services
+
+
+
 
 
 reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
 
 app = Flask(__name__)
+app.register_blueprint(bp_gestion_services, url_prefix='/gestion_services')
+
 
 @app.route('/')
 def base():
