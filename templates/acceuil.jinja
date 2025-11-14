@@ -9,7 +9,7 @@
             <p class="h2 card-title">{{item["titre"]}}</p>
             <img class="card-text" src="../static/placeholder.png" alt="image placeholder">
             <p class="card-text"> {{item["nom_categorie"]}} <br> {{item["description"]}} <br> localisation: {{item["localisation"]}}</p>
-            <a href="/details?id={{item["id_service"]}}" class="text-decoration-none w-25"><div class="bg-info text-white h3 inline text">Detais du service</div></a>
+            <a href="{%if 'id' not in session %} /compte {%else%} /details?id={{item['id_service']}} {%endif%}" class="text-decoration-none w-25"><div class="bg-info text-white h3 inline text">Detais du service</div></a>
         </div>
     </div>
     {% endfor %}

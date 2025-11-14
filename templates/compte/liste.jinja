@@ -2,7 +2,7 @@
 {%block main%}
 <ul>
     {% for compte in lescomptes%}
-    <li><a href="{{url_for(compte.modifier, compte={{compte['nom']}} )}}">{{compte['nom']}} , {{compte['role']}}</a></li>
+    <li><a href="{{ url_for('compte.suppr', id=compte['id_compte']) }}"> {{compte['nom']}} , {{compte['role']}}</a></li>
     {%endfor%}
 </ul>
 {%endblock%}

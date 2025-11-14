@@ -1,12 +1,17 @@
 import re
 from datetime import datetime
-from flask import Flask, render_template, request, abort, redirect, session
+from flask import Flask, render_template, request, abort, redirect, session, flash
+from modules.compte import bp_compte
 import bd
 
 
 reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
 
 app = Flask(__name__)
+
+app.register_blueprint(bp_compte, url_prefix = '/compte')
+
+app.secret_key = '6588ecc079c1f23d71a5f0f67ece4e7cf0cc8681df20e775ded64740cef3d462'
 
 @app.route('/')
 def base():
@@ -21,6 +26,8 @@ def base():
             retour = curseur.fetchall()
 
     return render_template('acceuil.jinja',  titre_page = "Acceuil", langue = "fr_CA", items=retour)
+
+
 
 @app.route("/details")
 def details():
