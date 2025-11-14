@@ -6,6 +6,7 @@ import types
 import contextlib
 import mysql.connector
 
+
 @contextlib.contextmanager
 def creer_connexion():
     """Pour créer une connexion à la BD"""
@@ -39,25 +40,3 @@ def get_curseur(self):
         yield curseur
     finally:
         curseur.close()
-
-
-def get_compte(nom, mdp):
-    """retourne l'id et le role de l'utilisateur en fonction de son nom et mot de passe"""
-    with creer_connexion() as conn:
-        with conn.get_curseur() as curseur:
-            curseur.execute('SELECT id_compte, role FROM compte WHERE' \
-            ' nom=%(nom)s AND mdp=%(mdp)s',{'nom':nom, 'mdp':mdp})
-            compte = curseur.fetchone()
-            return compte
-        
-def add_compte(nom, mdp, role):
-    """Ajoute un utilisateur à la base de données"""
-    with creer_connexion() as conn:
-        with conn.get_curseur() as curseur:
-            curseur.execute('INSERT IGNORE INTO compte FROM VALUES(NULL, %(nom)s,'
-            '%(mdp)s,%(role)s)' ,{'nom':nom, 'mdp':mdp, 'role':role})
-            conn.commit()
-
-
-def get_comptes():
-    """reto"""

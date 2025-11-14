@@ -1,7 +1,12 @@
 import re
 from datetime import datetime
-from flask import Flask, render_template, request, abort, redirect, session
+from flask import Flask, render_template, request, abort, redirect
 import bd
+
+
+
+
+
 
 
 reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
@@ -19,7 +24,6 @@ def base():
             "FROM services ser INNER JOIN categories cat ON " \
             "cat.id_categorie = ser.id_service ORDER BY ser.date_creation LIMIT 5")
             retour = curseur.fetchall()
-
     return render_template('acceuil.jinja',  titre_page = "Acceuil", langue = "fr_CA", items=retour)
 
 @app.route("/details")

@@ -1,1 +1,0 @@
-Damn le tp était chaud

@@ -1,0 +1,8 @@
+{%extends 'base.jinja'%}
+{%block main%}
+<ul>
+    {% for compte in lescomptes%}
+    <li><a href="{{url_for(compte.modifier, compte={{compte['nom']}} )}}">{{compte['nom']}} , {{compte['role']}}</a></li>
+    {%endfor%}
+</ul>
+{%endblock%}

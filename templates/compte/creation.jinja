@@ -1,0 +1,22 @@
+{%extends 'base.jinja'%}
+{%block main%}
+<h1> Création de compte </h1>
+<form action="/" method="post">
+    <div>
+        <input type="text" name="nom" id="nom" class="text-center w-50 h3" placeholder="mail / nom">
+        <div class="invalid-feedback">Le nom est obligatoire</div>
+    </div>
+
+    <div>
+        <input type="text" name="mdp" id="mdp" class="text-center w-50 h2" placeholder="mot de passe">
+        <div class="invalid-feedback">Le nom est obligatoire</div>
+    </div>
+
+    <div>
+        <select name="role" id="role" required disabled class="w-50 h2" aria-placeholder="ffddd">
+            <option value="utilisateur" class="text-center">utilisateur</option>
+        </select>
+    </div>
+    <div><input type="submit" value="Creer"></div>
+</form>
+{%endblock%}
