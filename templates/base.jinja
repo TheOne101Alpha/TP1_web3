@@ -19,13 +19,18 @@
                         <a href="/" class="nav-link text-black">Acceuil</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/ajout" class="nav-link text-black">Ajout</a>
+                        <a href="/gestion_services/ajout" class="nav-link text-black">Ajout</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/services" class="nav-link text-black">Services</a>
+                        <a href="/gestion_services" class="nav-link text-black">Services</a>
                     </li>
                     <li class="nav-item">
                         <a href="{%if session['role'] == 'admin'%}/compte/liste{%else%}/compte{%endif%}" class="nav-link text-black">Compte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{%if session%} /compte/deconnexion {%else%} /compte {%endif%}" class="nav-link text-black">
+                            {%if session%} deconnexion {%else%} Connexion {%endif%}
+                        </a>
                     </li>
                 </ul>
             </div>

@@ -12,7 +12,7 @@ def index():
 
     authentifier = False
 
-    if "nom" in session:
+    if "id" in session:
         authentifier = True
 
     retour = bd.get_services()
@@ -22,7 +22,7 @@ def index():
 
 
 @bp_gestion_services.route('/details/<int:id_service>')
-def service(id_service):
+def details(id_service):
     """Affiche un service en particulier"""
 
     proprietaire = False

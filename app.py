@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, abort, redirect, session, fla
 from modules.compte import bp_compte
 import bd
 
-from gestion_services import bp_gestion_services
+from modules.gestion_services import bp_gestion_services
 
 
 
@@ -66,6 +66,9 @@ def details():
 @app.route("/changement", methods=['GET', 'POST'])
 def changement():
     """affichage de changement ou ajout de services"""
+
+    if not session:
+        abort(404, "Vous n'êtes pas authentifié")
 
     categories = []
 
@@ -136,6 +139,10 @@ def changement():
 @app.route("/ajout", methods=['GET', 'POST'])
 def ajout():
     """ajoute un nouveau service dans la bd"""
+
+    if not session:
+        abort(404, "Vous n'êtes pas authentifié")
+
     categories = []
 
     v_nom = ""
@@ -190,23 +197,27 @@ def ajout():
             return render_template("ajout.jinja",titre_page = "ajout service",
                                     liste_categorie = categories)
 
-@app.route("/services")
-def services():
-    """Affiche tous les services dans la base de données"""
-    retour = []
-    with bd.creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            curseur.execute("SELECT id_service, (SELECT nom_categorie FROM " \
-            "`categories` WHERE categories.id_categorie " \
-            "= services.id_categorie), titre, localisation, " \
-            "description FROM `services` ORDER BY services.date_creation")
-            retour = curseur.fetchall()
-    return render_template('services.jinja',titre_page = "Services", lesservices=retour)
+# @app.route("/services")
+# def services():
+#     """Affiche tous les services dans la base de données"""
+#     retour = []
+#     with bd.creer_connexion() as connexion:
+#         with connexion.get_curseur() as curseur:
+#             curseur.execute("SELECT id_service, (SELECT nom_categorie FROM " \
+#             "`categories` WHERE categories.id_categorie " \
+#             "= services.id_categorie), titre, localisation, " \
+#             "description FROM `services` ORDER BY services.date_creation")
+#             retour = curseur.fetchall()
+#     return render_template('services.jinja',titre_page = "Services", lesservices=retour)
 
-@app.route("/merci_modif")
-def merci():
-    """affiche un message si un service est modifié"""
-    return render_template("merci.jinja", message = "modifier", titre_page = "ajout reussi")
+# @app.route("/merci_modif")
+# def merci():
+#     """affiche un message si un service est modifié"""
+
+#     if not session:
+
+
+#     return render_template("merci.jinja", message = "modifier", titre_page = "ajout reussi")
 
 @app.errorhandler(400)
 def gestion400(e):

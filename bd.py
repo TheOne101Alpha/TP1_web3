@@ -42,10 +42,10 @@ def get_curseur(self):
 
 
 def get_compte(nom, mdp):
-    """retourne le nom et le role de l'utilisateur en fonction de son nom et mot de passe"""
+    """retourne le l'id et le role et le crédit de l'utilisateur en fonction de son nom et mot de passe"""
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
-            curseur.execute('SELECT nom, role, credit FROM compte WHERE nom=%(nom)s AND mdp=%(mdp)s',{'nom':nom, 'mdp':mdp})
+            curseur.execute('SELECT id_compte, role, credit FROM compte WHERE nom=%(nom)s AND mdp=%(mdp)s',{'nom':nom, 'mdp':mdp})
             compte = curseur.fetchone()
             return compte
         
@@ -53,8 +53,8 @@ def add_compte(nom, mdp, role):
     """Ajoute un utilisateur à la base de données"""
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
-            curseur.execute('INSERT IGNORE INTO compte FROM VALUES(NULL, %(nom)s,'
-            '%(mdp)s,%(role)s)' ,{'nom':nom, 'mdp':mdp, 'role':role})
+            curseur.execute('INSERT IGNORE INTO compte VALUES(NULL, %(nom)s,'
+            '%(mdp)s,%(role)s, 0)' ,{'nom':nom, 'mdp':mdp, 'role':role})
             conn.commit()
 
 

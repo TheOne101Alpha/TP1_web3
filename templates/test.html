@@ -29,23 +29,17 @@
         </div>
     </header>
     <main class="text-center">
-        <form action="/" method="post">
+        <form action="/compte" method="POST">
             <div>
-                <input type="text" name="nom" id="nom" class="text-center w-50 h3" placeholder="mail / nom">
-                <div class="invalid-feedback">Le nom est obligatoire</div>
+                <input type="text" name="nom" id="nom" class="text-center w-50 h3" placeholder="mail">
             </div>
-
             <div>
                 <input type="text" name="mdp" id="mdp" class="text-center w-50 h2" placeholder="mot de passe">
-                <div class="invalid-feedback">Le nom est obligatoire</div>
             </div>
-
-            <div>
-                <select name="role" id="role" required disabled class="w-50 h2" aria-placeholder="ffddd"> 
-                    <option value="utilisateur" class="text-center">utilisateur</option>
-                </select>
+            <div class="d-flex align-content-between justify-content-around">
+                <input type="submit" value="Connexion">
+                <a href="/compte/creation"><button>CREER UN COMPTE</button></a>
             </div>
-            <div><input type="submit" value="Creer"></div>
         </form>
     </main>
 
