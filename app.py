@@ -17,6 +17,7 @@ reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
 app = Flask(__name__)
 
 app.register_blueprint(bp_compte, url_prefix = '/compte')
+app.register_blueprint(bp_gestion_services, url_prefix = '/gestion_services')
 
 app.secret_key = '6588ecc079c1f23d71a5f0f67ece4e7cf0cc8681df20e775ded64740cef3d462'
 

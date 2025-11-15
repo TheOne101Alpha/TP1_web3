@@ -45,7 +45,7 @@ def get_compte(nom, mdp):
     """retourne le nom et le role de l'utilisateur en fonction de son nom et mot de passe"""
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
-            curseur.execute('SELECT nom, role FROM compte WHERE nom=%(nom)s AND mdp=%(mdp)s',{'nom':nom, 'mdp':mdp})
+            curseur.execute('SELECT nom, role, credit FROM compte WHERE nom=%(nom)s AND mdp=%(mdp)s',{'nom':nom, 'mdp':mdp})
             compte = curseur.fetchone()
             return compte
         
@@ -83,8 +83,8 @@ def id_exist(id_compte):
             if compte:
                 return True
             return False
-        
-def services_compte(id):
+
+def services_compte(id_compte):
     """retourne tous les services du compte si il n'est pas admin"""
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
@@ -97,3 +97,33 @@ def services_compte(id):
 def hacher_mdp(mdp_en_clair):
     """Prend un mot de passe en clair et lui applique une fonction de hachage"""
     return hashlib.sha512(mdp_en_clair.encode()).hexdigest()
+
+def get_service(id_service):
+    """retourne un service en particulier"""
+    retour = []
+
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+
+            curseur.execute('SELECT cat.nom_categorie, ser.date_creation, ' \
+            'ser.titre, ser.actif, ser.description, ser.cout,' \
+            ' ser.localisation FROM services ser INNER JOIN' \
+            ' categories cat ON cat.id_categorie = ser.id_categorie ' \
+            'WHERE ser.id_service =%(id)s', {'id': id_service})
+            retour = curseur.fetchone()
+
+    return retour
+
+def get_services():
+    """Retourne tous les services disponibles"""
+
+    retour = []
+    with creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            curseur.execute("SELECT id_service, (SELECT nom_categorie FROM " \
+            "`categories` WHERE categories.id_categorie " \
+            "= services.id_categorie), titre, localisation, " \
+            "description FROM `services` ORDER BY services.date_creation")
+            retour = curseur.fetchall()
+
+    return retour

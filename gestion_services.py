@@ -28,17 +28,16 @@ def service(id_service):
     proprietaire = False
     offert = False
     disponible = False
-    with bd.creer_connexion() as conn:
-        retour = bd.get_service(conn, id_service)
+    retour = bd.get_service(id_service)
 
-        if not retour:
-            abort(404)
+    if not retour:
+        abort(404)
 
-        #if retour['proprietaire'] in session:
-            #proprietaire = True
+    #if retour['proprietaire'] in session:
+        #proprietaire = True
 
-        if proprietaire is False and retour['actif'] > 1:
-            disponible = True
+    if proprietaire is False and retour['actif'] > 1:
+        disponible = True
 
-    return render_template('/gestion_services/details.jinja', 
+    return render_template('/gestion_services/details.jinja',
                            item=retour, proprietaire=proprietaire, offert=offert, disponible=disponible)

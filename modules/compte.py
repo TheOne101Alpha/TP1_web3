@@ -26,6 +26,7 @@ def authen():
         session.permanent = True
         session['nom'] = compte['nom']
         session['role'] = compte['role']
+        session['credit'] = compte['credit']
         return redirect('/', code=302)
 
     
