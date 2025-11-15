@@ -1,11 +1,14 @@
 {% extends "base.jinja" %}
-
+{%block link%}
+    <link rel="stylesheet" href="../../static/css/style.css">
+    <link rel="icon" href="../../static/icon-tp1.svg">
+{%endblock%}
 {% block main %}
 
 <div class="container">
     <div class="row justify-content-center align-middle gap-4">
         <section class="col-4 border"> 
-            <img src=".../static/placeholder.png">
+            <img src="../../static/placeholder.png">
             <h1>Prix: {{item["cout"]}}$</h1>
         </section>
         <section class="col-6 border"> 

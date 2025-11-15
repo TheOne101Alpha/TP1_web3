@@ -127,3 +127,33 @@ def get_services():
             retour = curseur.fetchall()
 
     return retour
+
+def add_service(nom, description, localisation, date, categorie, actif, cout):
+    """Permet d'ajouter un service"""
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                'INSERT INTO services VALUES (NULL,%(categorie_id)s,%(letitre)s,'
+                '%(ladescription)s,%(lalocalisation)s,%(ladate)s,'
+                '%(si_actif)s,%(lecout)s, NULL)',
+                {
+                    'letitre': nom,
+                    'ladescription': description,
+                    'lalocalisation': localisation,
+                    'ladate': date,
+                    'categorie_id': categorie,
+                    'si_actif': actif,
+                    'lecout': cout,
+                }
+            )
+            conn.commit()
+            return True
+
+    return False
+
+def get_categories():
+    """Retourne toutes les catégories"""
+    with creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            curseur.execute("SELECT id_categorie, nom_categorie FROM categories")
+            return curseur.fetchall()

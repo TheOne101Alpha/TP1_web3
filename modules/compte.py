@@ -26,7 +26,6 @@ def authen():
         session['id'] = compte['id_compte']
         session['role'] = compte['role']
         session['credit'] = compte['credit']
-        print(compte)
         return redirect('/', code=302)
     return render_template('compte/authentifier.jinja')
 
