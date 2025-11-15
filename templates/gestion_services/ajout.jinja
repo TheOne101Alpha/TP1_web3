@@ -1,0 +1,47 @@
+{%extends "base.jinja" %}
+{% block main%}
+<form action="/ajout" method="post" novalidate="novalidate">
+    <div>
+        <label for="nom_service">Nom du service: </label>
+        <div>
+            <input type="text" value="{{titre or ""}}" name="nom_service" id="nom_service" class="text-center {{valide_nom or ""}}">
+            <div class="invalid-feedback">Le nom est obligatoire</div>
+        </div>
+    </div>
+    <div>
+        <label for="choix_categorie">Catégorie: </label>
+        <select name="choix_categorie" id="choix_categorie" required >
+            {% for categorie in liste_categorie %}
+            <option value="{{categorie["id_categorie"]}}">{{categorie["nom_categorie"]}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="localisation_service">Localisation (ville):</label>
+        <div>
+            <input type="text" value="{{local or ""}}" name="localisation_service" id="localisation_service" class="text-center {{valide_localisation}}" required >
+            <div class="invalid-feedback">La localisation est obligatoire</div>
+        </div>
+    </div>
+    <div>
+        <label for="nom_service">Description: </label>
+        <div>
+            <input type="text" value="{{description or ""}}" name="description_service" class="text-center {{valide_description}}" id="description_service" maxlength="100">
+            <div class="invalid-feedback">La description est obligatoire</div>        
+        </div>
+    </div>
+
+    <div>
+        <label for="cout_service">Coût($): </label>
+        <div>
+            <input type="number" value="{{cout or ""}}" name="cout_service" id="cout_service" class="chiffre text-center" step="0.01">
+            <div class="invalid-feedback">Le cout est obligatoire</div>
+        </div>
+    </div>
+    <div>
+        <label for="actif_service">Statut: </label>
+        <input type="checkbox" name="actif_service" id="actif_service" value="1">
+    </div>
+    <div><input type="submit" value ="Ajout" value="Ajouter"></div>
+</form>
+{%endblock%}

@@ -37,29 +37,29 @@ def base():
 
 
 
-@app.route("/details")
-def details():
-    """affiche la page de détail"""
-    retour = []
+#@bp_gestion_services.get('/details')
+#def details():
+    #"""affiche la page de détail"""
+    #retour = []
 
-    identifiant = request.args.get('id', type=int)
+    #identifiant = request.args.get('id', type=int)
 
-    if not identifiant:
-        abort(400, "parametre id manquant")
+    #if not identifiant:
+        #abort(400, "parametre id manquant")
 
-    with bd.creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            curseur.execute('SELECT cat.nom_categorie, ser.date_creation, ' \
-            'ser.titre, ser.actif, ser.description, ser.cout,' \
-            ' ser.localisation FROM services ser INNER JOIN' \
-            ' categories cat ON cat.id_categorie = ser.id_categorie ' \
-            'WHERE ser.id_service =%(id)s', {'id': identifiant})
-            retour = curseur.fetchone()
-            if not retour:
-                abort(404, "details d'un service inexistant")
+    #with bd.creer_connexion() as connexion:
+        #with connexion.get_curseur() as curseur:
+            #curseur.execute('SELECT cat.nom_categorie, ser.date_creation, ' \
+            #'ser.titre, ser.actif, ser.description, ser.cout,' \
+            #' ser.localisation FROM services ser INNER JOIN' \
+            #' categories cat ON cat.id_categorie = ser.id_categorie ' \
+            #'WHERE ser.id_service =%(id)s', {'id': identifiant})
+            #retour = curseur.fetchone()
+            #if not retour:
+            #    abort(404, "details d'un service inexistant")
 
-            return render_template("details.jinja", titre_page = "Détails",
-                                    item = retour, id_change = identifiant)
+            #return render_template("details.jinja", titre_page = "Détails",
+            #                        item = retour, id_change = identifiant)
 
 
 
@@ -133,62 +133,7 @@ def changement():
             return render_template("changement.jinja",titre_page = "Modification service",
                                     service=leservice, liste_categorie = categories)
 
-@app.route("/ajout", methods=['GET', 'POST'])
-def ajout():
-    """ajoute un nouveau service dans la bd"""
-    categories = []
 
-    v_nom = ""
-    v_local=""
-    v_descr=""
-
-    nom = request.form.get("nom_service", default= "")
-    localisation = request.form.get("localisation_service", default= "")
-    description = request.form.get("description_service", default= "")
-    categorie = request.form.get("choix_categorie", default=None, type=int)
-    actif = request.form.get("actif_service", default= 0, type=int)
-    cout = request.form.get('cout', default=0, type=int)
-    if request.method == 'POST':
-        if reg_html.fullmatch(nom) or len(nom) < 1 or len(nom) > 50:
-            v_nom = "is-invalid"
-        if reg_html.fullmatch(localisation) or len(localisation) < 5 or len(localisation) > 50:
-            v_local = "is-invalid"
-        if reg_html.fullmatch(description) or len(description) < 5 or len(description) > 2000:
-            v_descr = "is-invalid"
-
-        if v_nom or v_local or v_descr:
-            # si un des champs est faux
-            # retourne sur la même page
-            return render_template("ajout.jinja", titre_page= "ajout",
-                                   valide_nom = v_nom, valide_localisation = v_local,
-                                     valide_description = v_descr, titre = nom,
-                                     local=localisation, description=description,cout = cout)
-        # Sinon ajoute les données à la bd à l'aide de INSERT
-        date = datetime.now()
-        with bd.creer_connexion() as conn:
-            with conn.get_curseur() as curseur:
-                curseur.execute(
-                    'INSERT INTO services VALUES (NULL,%(categorie_id)s,%(letitre)s,'
-                    '%(ladescription)s,%(lalocalisation)s,%(ladate)s,'
-                    '%(si_actif)s,%(lecout)s, NULL)',
-                    {
-                        'letitre': nom,
-                        'ladescription': description,
-                        'lalocalisation': localisation,
-                        'ladate': date,
-                        'categorie_id': categorie,
-                        'si_actif': actif,
-                        'lecout': cout,
-                    }
-                )
-                conn.commit()
-                return redirect("/merci_modif", code=303)
-    with bd.creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            curseur.execute("SELECT id_categorie, nom_categorie FROM categories")
-            categories= curseur.fetchall()
-            return render_template("ajout.jinja",titre_page = "ajout service",
-                                    liste_categorie = categories)
 
 @app.route("/services")
 def services():

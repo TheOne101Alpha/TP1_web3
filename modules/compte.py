@@ -27,6 +27,7 @@ def authen():
         session['nom'] = compte['nom']
         session['role'] = compte['role']
         session['credit'] = compte['credit']
+        session['id_compte'] = compte['id_compte']
         return redirect('/', code=302)
 
     
