@@ -3,8 +3,8 @@ Module pour la gestion des services
 """
 import re
 from datetime import datetime
-import bd
 from flask import Blueprint, render_template, session, abort, request, redirect
+import bd
 
 reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
 
@@ -44,15 +44,13 @@ def service(id_service):
         disponible = True
 
     return render_template('/gestion_services/details.jinja',
-                           item=retour, proprietaire=proprietaire, offert=offert, disponible=disponible)
+                           item=retour, proprietaire=proprietaire,
+                             offert=offert, disponible=disponible)
 
 
 @bp_gestion_services.route('/changement/<int:id_change>', methods=['GET', 'POST'])
 def changement(id_change):
-    
     """affichage de changement ou ajout de services"""
-
-    categories = bd.get_categories()
     if not id_change:
         abort(400, "le parametre id est manquant")
 
@@ -100,6 +98,10 @@ def changement(id_change):
                 conn.commit()
                 return redirect("/merci_modif", code=303)
 
+    retour = bd.get_service(id_change)
+    categorie = bd.get_categories()
+    return render_template("changement.jinja", service=retour, categorie=categorie)
+
 @bp_gestion_services.route("/ajout", methods=['GET', 'POST'])
 def ajout():
     """ajoute un nouveau service dans la bd"""
@@ -133,7 +135,7 @@ def ajout():
         # Sinon ajoute les données à la bd à l'aide de INSERT
         if bd.add_service(nom, description, localisation, datetime.now, categorie, actif, cout):
             return redirect("/merci_modif", code=303)
-    
+
     categorie = bd.get_categories()
     return render_template("/gestion_services/ajout.jinja",titre_page = "ajout service",
                                     liste_categorie = categories)
