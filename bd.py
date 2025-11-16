@@ -105,9 +105,9 @@ def get_service(id_service):
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
 
-            curseur.execute('SELECT cat.nom_categorie, ser.date_creation, ' \
-            'ser.titre, ser.actif, ser.description, ser.cout,' \
-            ' ser.localisation FROM services ser INNER JOIN' \
+            curseur.execute('SELECT ser.id_service, cat.nom_categorie, ser.date_creation, ' \
+            'ser.titre, ser.actif, ser.description, ser.cout, ser.proprietaire,' \
+            ' ser.localisation, ser.locataire FROM services ser INNER JOIN' \
             ' categories cat ON cat.id_categorie = ser.id_categorie ' \
             'WHERE ser.id_service =%(id)s', {'id': id_service})
             retour = curseur.fetchone()
@@ -167,3 +167,45 @@ def get_categories():
         with connexion.get_curseur() as curseur:
             curseur.execute("SELECT id_categorie, nom_categorie FROM categories")
             return curseur.fetchall()
+
+def delete_service(id_service):
+    """supprime un compte dans la base de données"""
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute('DELETE FROM services WHERE `id_service` = %(id)s', {'id': id_service})
+            conn.commit()
+
+def update_service(id_change, nom, description, localisation, actif, cout, date):
+    """Permet de modifier un service en particulier"""
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                'UPDATE services SET titre= %(letitre)s, description= %(ladescription)s, ' \
+                'localisation= %(lalocalisation)s,date_creation= %(ladate)s' \
+                ', actif= %(si_actif)s,cout= %(lecout)s WHERE id_service = %(ident)s',
+                {
+                    'letitre': nom,
+                    'ladescription': description,
+                    'lalocalisation': localisation,
+                    'si_actif': actif,
+                    'lecout': cout,
+                    'ladate': date,
+                    'ident': id_change
+                }
+            )
+            conn.commit()
+
+def book_service(id_service, id_locataire):
+    """Permet de réserver un service dans la bd"""
+
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                'UPDATE services SET locataire = %(compte)s '  \
+                ' WHERE id_service = %(ident)s',
+                {
+                    'ident': id_service,
+                    'compte': id_locataire
+                }
+            )
+            conn.commit()
