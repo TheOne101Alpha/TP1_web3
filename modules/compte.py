@@ -5,29 +5,56 @@ import bd
 
 bp_compte = Blueprint('compte', __name__)
 
-@bp_compte.route('/', methods=['GET', 'POST'])
+
+
+@bp_compte.route('/<int:id_compte>')
+def index(id_compte):
+    """Affiche les services postés par un utilisateur"""
+    print(id_compte)
+    if 'id' not in session:
+        return redirect('/compte/connexion')
+
+    if not bd.id_exist(id_compte):
+        return abort(404, 'utilisateur inexistant')
+
+    services = bd.get_services_compte(id_compte)
+    print(services)
+    return render_template('compte/services.jinja', lesservices=services)
+
+@bp_compte.route('/connexion', methods=['GET', 'POST'])
 def authen():
-    """Affiche la page d'authentification et l'index du bp compte"""
+    """Affiche la page d'authentification"""
     nom = request.form.get('nom', type=str, default='')
     mdp = bd.hacher_mdp(request.form.get('mdp', type=str, default=''))
+
+    print("Plain entered:", request.form.get('mdp'))
+    print('the name: ' , request.form.get('nom'))
+    print("Hash computed:", mdp)
 
     # if 'nom' not in session:
     #     return render_template('compte/authentifier.jinja')
     if request.method == 'POST':
         compte = bd.get_compte(nom, mdp)
-        print(mdp)
         print(compte)
         # si aucun compte ne reviens, on retourne sur la même page
         if not compte:
             flash('Connexion refusé')
+            print('un message est flash')
             return render_template('compte/authentifier.jinja')
         #sinon la session est donnée à la personne
         session.permanent = True
         session['id'] = compte['id_compte']
         session['role'] = compte['role']
         session['credit'] = compte['credit']
+        print(session)
         return redirect('/', code=302)
     return render_template('compte/authentifier.jinja')
+
+@bp_compte.route('/deconnexion')
+def deconnexion():
+    """Deconnecte l'utilisateur et supprime la session"""
+    session.clear()
+    return redirect('/')
 
 @bp_compte.route('/creation', methods=['get', 'post'])
 def creation():

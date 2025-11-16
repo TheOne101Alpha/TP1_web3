@@ -26,11 +26,19 @@
                         <a href="/gestion_services" class="nav-link text-black">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{%if session['role'] == 'admin'%}/compte/liste{%else%}/compte{%endif%}" class="nav-link text-black">Compte</a>
+                        <a href="
+                        {%if session.get('role') == 'admin'%} 
+                        /compte/liste 
+                        {% elif session.get('role') == 'utilisateur' %} 
+                        /compte/{{session.get('id')}} 
+                        {%else%} 
+                        compte/connexion 
+                        {%endif%}" 
+                        class="nav-link text-black">Compte</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{%if session%} /compte/deconnexion {%else%} /compte {%endif%}" class="nav-link text-black">
-                            {%if session%} deconnexion {%else%} Connexion {%endif%}
+                        <a href="{%if session%} /compte/deconnexion {%else%} /compte/connexion {%endif%}" class="nav-link text-black">
+                            {%if session.get('id')%} deconnexion {%else%} Connexion {%endif%}
                         </a>
                     </li>
                 </ul>

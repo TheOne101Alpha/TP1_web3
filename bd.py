@@ -116,7 +116,6 @@ def get_service(id_service):
 
 def get_services():
     """Retourne tous les services disponibles"""
-
     retour = []
     with creer_connexion() as connexion:
         with connexion.get_curseur() as curseur:
@@ -125,7 +124,18 @@ def get_services():
             "= services.id_categorie), titre, localisation, " \
             "description FROM `services` ORDER BY services.date_creation")
             retour = curseur.fetchall()
+    return retour
 
+def get_services_compte(id_compte):
+    """Retourne tous les services disponibles"""
+    retour = []
+    with creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            curseur.execute("SELECT id_service, (SELECT nom_categorie FROM " \
+            "`categories` WHERE categories.id_categorie " \
+            "= services.id_categorie), titre, localisation, " \
+            "description FROM `services` WHERE `proprietaire` = %(id)s ORDER BY services.date_creation", {'id':id_compte})
+            retour = curseur.fetchall()
     return retour
 
 def add_service(nom, description, localisation, date, categorie, actif, cout):
