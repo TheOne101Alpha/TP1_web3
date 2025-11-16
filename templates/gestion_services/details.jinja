@@ -27,7 +27,7 @@
             <a href="{{ url_for('gestion_services.supprimer', id_service=service['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Supprimer le service</a>
             {%endif%}
             {%if offert%}
-            <a href="{{ url_for('gestion_services.reserver', id_service=service['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Reserver le service</a>
+            <a href="{{ url_for('gestion_services.reserver', id_service=item['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Reserver le service</a>
             {%endif%}
         </section>
     </div>
