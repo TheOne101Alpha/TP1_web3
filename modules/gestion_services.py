@@ -38,7 +38,7 @@ def details(id_service):
     if retour['proprietaire'] in session:
         proprietaire = True
 
-    if proprietaire is False and retour['actif'] > 1:
+    if proprietaire is False and retour['actif'] == 1:
         disponible = True
 
     return render_template('/gestion_services/details.jinja',
