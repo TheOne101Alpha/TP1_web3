@@ -30,7 +30,6 @@ def details(id_service):
     """Affiche un service en particulier"""
 
     proprietaire = False
-    offert = False
     disponible = False
     retour = bd.get_service(id_service)
     if not retour:
@@ -44,7 +43,7 @@ def details(id_service):
 
     return render_template('/gestion_services/details.jinja',
                            item=retour, proprietaire=proprietaire,
-                             offert=offert, disponible=disponible)
+                             offert=disponible)
 
 
 @bp_gestion_services.route('/changement/<int:id_change>', methods=['GET', 'POST'])
