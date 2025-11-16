@@ -130,10 +130,10 @@ def supprimer(id_service):
 
     bd.delete_service(id_service)
     flash('Suppression réussi avec succès')
-    redirect('/', code=303)
+    return redirect('/', code=303)
 
 @bp_gestion_services.route('/reserver/<int:id_service>')
 def reserver(id_service):
     """Permet de reserver un service particulier"""
     bd.book_service(id_service, session['id'])
-    redirect('/', code=303)
+    return redirect('/', code=303)
