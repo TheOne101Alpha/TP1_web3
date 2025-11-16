@@ -23,10 +23,11 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dolor massa, mattis vitae elit id, dignissim porttitor ipsum. Nunc sed eros a dolor imperdiet efficitur. Mauris ornare at ex ut aliquam. Nunc tristique nulla nec fermentum pellentesque. Nam quis bibendum ante. Suspendisse tincidunt magna vel dolor aliquet vehicula. Vestibulum eget nibh tellus. Phasellus accumsan vel diam quis varius.
                 Suspendisse eget finibus elit. Nullam ultrices leo non nulla porttitor consectetur. Nam bibendum lorem metus, ullamcorper tempor diam tristique viverra. Pellentesque rhoncus, nulla sed euismod dignissim, turpis felis sagittis nunc, vitae tempus odio eros ac dui. Ut vel lobortis diam, eu porttitor ante. Praesent pellentesque accumsan mollis. Vestibulum ut purus fermentum, faucibus justo ut, euismod nulla. Fusce aliquam risus sit amet ex luctus faucibus. Donec quis mi felis.</p>
             {%if proprietaire %}
-            <a href="/changement/id_change" class="text-decoration-none w-25 bg-info text-white h3 text">Modifier le service</a>
-            {%if offert%}
-            <a href="/supprimer/id_change" class="text-decoration-none w-25 bg-info text-white h3 text">Supprimer le service</a>
+            <a href="{{ url_for('gestion_services.changement', id_service=service['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Modifier le service</a>
+            <a href="{{ url_for('gestion_services.supprimer', id_service=service['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Supprimer le service</a>
             {%endif%}
+            {%if offert%}
+            <a href="{{ url_for('gestion_services.reserver', id_service=service['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Reserver le service</a>
             {%endif%}
         </section>
     </div>

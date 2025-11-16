@@ -3,7 +3,7 @@ Module pour la gestion des services
 """
 import re
 from datetime import datetime
-from flask import Blueprint, render_template, session, abort, request, redirect
+from flask import Blueprint, render_template, session, abort, request, redirect, flash
 import bd
 
 reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
@@ -33,12 +33,11 @@ def details(id_service):
     offert = False
     disponible = False
     retour = bd.get_service(id_service)
-
     if not retour:
         abort(404)
 
-    #if retour['id_proprio'] in session:
-        #proprietaire = True
+    if retour['proprietaire'] in session:
+        proprietaire = True
 
     if proprietaire is False and retour['actif'] > 1:
         disponible = True
@@ -79,24 +78,9 @@ def changement(id_change):
                                      valide_description = v_descr)
         # Sinon ajoute les données à la bd à l'aide de update
         date = datetime.now()
-        with bd.creer_connexion() as conn:
-            with conn.get_curseur() as curseur:
-                curseur.execute(
-                    'UPDATE services SET titre= %(letitre)s, description= %(ladescription)s, ' \
-                    'localisation= %(lalocalisation)s,date_creation= %(ladate)s' \
-                    ', actif= %(si_actif)s,cout= %(lecout)s WHERE id_service = %(ident)s',
-                    {
-                        'letitre': nom,
-                        'ladescription': description,
-                        'lalocalisation': localisation,
-                        'si_actif': actif,
-                        'lecout': cout,
-                        'ladate': date,
-                        'ident': id_change
-                    }
-                )
-                conn.commit()
-                return redirect("/merci_modif", code=303)
+        bd.update_service(id_change, nom, description, localisation, actif, cout, date)
+        flash('Changement réussi avec succès')
+        return redirect("/merci_modif", code=303)
 
     retour = bd.get_service(id_change)
     categorie = bd.get_categories()
@@ -134,8 +118,23 @@ def ajout():
                                      local=localisation, description=description,cout = cout)
         # Sinon ajoute les données à la bd à l'aide de INSERT
         if bd.add_service(nom, description, localisation, datetime.now, categorie, actif, cout):
-            return redirect("/merci_modif", code=303)
+            flash('Ajout réussi avec succès')
+            return redirect("/", code=303)
 
     categorie = bd.get_categories()
     return render_template("/gestion_services/ajout.jinja",titre_page = "ajout service",
                                     liste_categorie = categories)
+
+@bp_gestion_services.route('/supprimer/<int:id_service>', methods=['POSt'])
+def supprimer(id_service):
+    """Permet de supprimer un service"""
+
+    bd.delete_service(id_service)
+    flash('Suppression réussi avec succès')
+    redirect('/', code=303)
+
+@bp_gestion_services.route('/reserver/<int:id_service>')
+def reserver(id_service):
+    """Permet de reserver un service particulier"""
+    bd.book_service(id_service, session['id'])
+    redirect('/', code=303)
