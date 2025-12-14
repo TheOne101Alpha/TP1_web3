@@ -58,8 +58,6 @@ def add_compte(nom, mdp, role):
             curseur.execute('INSERT IGNORE INTO compte VALUES(NULL, %(nom)s,'
             '%(mdp)s,%(role)s, 0)' ,{'nom':nom, 'mdp':mdp, 'role':role})
             conn.commit()
-            if(curseur.rowcount != 0):
-                app.logger
 
 
 def get_comptes():
