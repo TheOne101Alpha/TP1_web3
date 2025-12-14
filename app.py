@@ -17,6 +17,7 @@ if not os.getenv('BD_Utilisateur'):
 
 reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
 
+
 app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG)
 app.register_blueprint(bp_compte, url_prefix = '/compte')
