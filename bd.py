@@ -92,7 +92,7 @@ def services_compte(id_compte):
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute('SELECT * FROM services WHERE proprietaire=%(id)s',{'id':id_compte})
-            compte = curseur.fetchone()
+            compte = curseur.fetchall()
             return compte
 
 def hacher_mdp(mdp_en_clair):
