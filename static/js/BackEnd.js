@@ -28,6 +28,7 @@ async function suggestions(){
             const lien = document.createElement("a");
             lien.href = "/gestion_services/details/" + suggest[i].id;
             lien.textContent = suggest[i].titre;
+            lien.addEventListener("click", () => StockageSuggestions(suggest[i]));
             li.append(lien);
             ul.appendChild(li);
         }
