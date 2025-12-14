@@ -91,11 +91,9 @@ def services_compte(id_compte):
     """retourne tous les services du compte si il n'est pas admin"""
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
-            curseur.execute('SELECT * FROM service WHERE id_compte=%(id)s',{'id':id_compte})
+            curseur.execute('SELECT * FROM service WHERE proprietaire=%(id)s',{'id':id_compte})
             compte = curseur.fetchone()
-            if compte:
-                return True
-            return False
+            return compte
 
 def hacher_mdp(mdp_en_clair):
     """Prend un mot de passe en clair et lui applique une fonction de hachage"""
@@ -126,14 +124,6 @@ def get_services():
             retour = curseur.fetchall()
             return retour
 
-def get_services_compte(id_compte):
-    """Retourne tous les services disponibles"""
-    retour = []
-    with creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            curseur.execute("SELECT * FROM services WHERE id_compte = %(id)s ORDER BY date_creation", {'id': id_compte})
-            retour = curseur.fetchall()
-            return retour
 
 def add_service(id_compte,nom, description, localisation, date, categorie, actif, cout):
     """Permet d'ajouter un service"""

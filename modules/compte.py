@@ -19,7 +19,7 @@ def index(id_compte):
         app.logger.debug("L'utilisateur n'existe pas dans la base de données, abort 404")
         return abort(404, 'utilisateur inexistant')
 
-    services = bd.get_services_compte(id_compte)
+    services = bd.services_compte(id_compte)
     app.logger.debug(f"L'utilisateur {id_compte} a {len(services)} services")
     return render_template('compte/services.jinja', lesservices=services)
 
