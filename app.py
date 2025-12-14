@@ -2,6 +2,7 @@
 
 import re
 import os
+import logging
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, abort, redirect, session
 from datetime import datetime
@@ -17,6 +18,7 @@ if not os.getenv('BD_Utilisateur'):
 reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
 
 app = Flask(__name__)
+app.logger.setLevel(logging.DEBUG)
 app.register_blueprint(bp_compte, url_prefix = '/compte')
 app.register_blueprint(bp_gestion_services, url_prefix = '/gestion_services')
 app.register_blueprint(bp_api, url_prefix = '/api')

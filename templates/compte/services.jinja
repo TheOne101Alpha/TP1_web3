@@ -12,7 +12,7 @@
             <p class="h2 card-title">{{service["titre"]}}</p>
             <img class="card-text" src="../static/placeholder.png" alt="image placeholder">
             <p class="card-text">{{service["(SELECT nom_categorie FROM `categories` WHERE categories.id_categorie = services.id_categorie)"]}} <br> {{service["description"]}} <br> localisation: {{service["localisation"]}}</p>
-            <a href="{%if 'id' not in session %} /compte {%else%} {{url_for('details', id_service=services['id_service'] )}} {%endif%}" class="text-decoration-none w-25"><div class="bg-info text-white h3 inline text">Detais du service</div></a>
+            <a href="{%if 'id' not in session %} /compte {%else%} {{url_for('changement', id_change=services['id_service'] )}} {%endif%}" class="text-decoration-none w-25"><div class="bg-info text-white h3 inline text">Modifier le service</div></a>
         </div>
     </div>
     {% endfor %}

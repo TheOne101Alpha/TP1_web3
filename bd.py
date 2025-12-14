@@ -11,10 +11,10 @@ import os
 def creer_connexion():
     """Pour créer une connexion à la BD"""
     conn = mysql.connector.connect(
-        user=os.getenv("BD_Utilisateur"),
-        password=os.getenv("BD_Mdp"),
-        host=os.getenv("BD_Serveur"),
-        database=os.getenv("BD_Nom_Schema"),
+        user=os.getenv('BD_Utilisateur'),
+        password=os.getenv('BD_Mdp'),
+        host=os.getenv('BD_Serveur'),
+        database=os.getenv('BD_Nom_Schema'),
         raise_on_warnings=True
     )
 
@@ -58,7 +58,8 @@ def add_compte(nom, mdp, role):
             curseur.execute('INSERT IGNORE INTO compte VALUES(NULL, %(nom)s,'
             '%(mdp)s,%(role)s, 0)' ,{'nom':nom, 'mdp':mdp, 'role':role})
             conn.commit()
-            print('nombre de compte ajouté:', curseur.rowcount)
+            if(curseur.rowcount != 0):
+                app.logger
 
 
 def get_comptes():
@@ -175,6 +176,7 @@ def delete_service(id_service):
         with conn.get_curseur() as curseur:
             curseur.execute('DELETE FROM services WHERE `id_service` = %(id)s', {'id': id_service})
             conn.commit()
+            return bool(curseur.rowcount > 0)
 
 def update_service(id_change, nom, description, localisation, actif, cout, date):
     """Permet de modifier un service en particulier"""
@@ -198,7 +200,6 @@ def update_service(id_change, nom, description, localisation, actif, cout, date)
 
 def book_service(id_service, id_locataire):
     """Permet de réserver un service dans la bd"""
-
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute(
@@ -210,3 +211,4 @@ def book_service(id_service, id_locataire):
                 }
             )
             conn.commit()
+            return bool(curseur.rowcount > 0)
