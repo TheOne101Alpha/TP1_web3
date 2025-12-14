@@ -85,6 +85,24 @@ async function UpdateAcceuil(){
     }
 }
 
+function StockageSuggestions(service){
+    let tableau = JSON.parse(localStorage.getItem("suggestions"));
+
+    if(!tableau){
+        tableau = [];
+        tableau.push(service);
+        localStorage.setItem("suggestions", JSON.stringify(tableau));
+        return;
+    }
+
+    if(!tableau.includes(service)){
+        tableau.push(service);
+        localStorage.setItem("suggestions", JSON.stringify(tableau));
+        return;
+    }
+    return;
+}
+
 
 // initialisation des ecouteurs d'évenements
 function initialize(){
