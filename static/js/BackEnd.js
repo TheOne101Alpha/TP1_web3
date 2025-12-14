@@ -28,7 +28,13 @@ async function suggestions(){
             const lien = document.createElement("a");
             lien.href = "/gestion_services/details/" + suggest[i].id;
             lien.textContent = suggest[i].titre;
-            lien.addEventListener("click", () => StockageSuggestions(suggest[i]));
+            lien.dataset.id_service = suggest[i].id;
+            lien.dataset.titre = suggest[i].titre;
+            lien.addEventListener("click", function(){
+                let service = {id: this.dataset.id_service,
+                               titre: this.dataset.titre};
+                StockageSuggestions(service);
+            });
             li.append(lien);
             ul.appendChild(li);
         }
