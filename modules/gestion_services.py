@@ -95,7 +95,7 @@ def changement(id_change):
         app.logger.debug(f"Service {id_change} mis à jour avec succès")
         flash('Changement réussi avec succès')
         return redirect("/", code=303)
-
+    
     retour = bd.get_service(id_change)
     categorie = bd.get_categories()
     return render_template("/gestion_services/changement.jinja", service=retour, categories=categorie)
