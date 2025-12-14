@@ -114,8 +114,7 @@ def get_service(id_service):
             ' categories cat ON cat.id_categorie = ser.id_categorie ' \
             'WHERE ser.id_service =%(id)s ORDER BY ser.date_creation', {'id': id_service})
             retour = curseur.fetchone()
-
-    return retour
+            return retour
 
 def get_services():
     """Retourne tous les services disponibles"""
@@ -125,19 +124,16 @@ def get_services():
             curseur.execute("SELECT s.id_service, c.nom_categorie, s.titre, s.localisation, " \
             "s.description, s.id_categorie FROM `services` s INNER JOIN `categories` c ON c.id_categorie = s.id_categorie ORDER BY s.date_creation")
             retour = curseur.fetchall()
-    return retour
+            return retour
 
 def get_services_compte(id_compte):
     """Retourne tous les services disponibles"""
     retour = []
     with creer_connexion() as connexion:
         with connexion.get_curseur() as curseur:
-            curseur.execute("SELECT id_service, (SELECT nom_categorie FROM " \
-            "`categories` WHERE categories.id_categorie " \
-            "= services.id_categorie), titre, localisation, " \
-            "description FROM `services` WHERE `proprietaire` = %(id)s ORDER BY services.date_creation", {'id':id_compte})
+            curseur.execute("SELECT * FROM services WHERE id_compte = %(id)s ORDER BY date_creation", {'id': id_compte})
             retour = curseur.fetchall()
-    return retour
+            return retour
 
 def add_service(id_compte,nom, description, localisation, date, categorie, actif, cout):
     """Permet d'ajouter un service"""

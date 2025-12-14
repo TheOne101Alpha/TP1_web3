@@ -136,9 +136,9 @@ def ajout():
             flash('Ajout réussi avec succès')
             app.logger.debug("Nouveau service ajouté avec succès")
             return redirect('/', code=303)
-        else:
-            app.logger.error("Erreur lors de l'ajout du nouveau service")
-            return abort(500, "Erreur lors de l'ajout du service")
+    
+        app.logger.error("Erreur lors de l'ajout du nouveau service")
+        return abort(500, "Erreur lors de l'ajout du service")
 
     categorie = bd.get_categories()
     return render_template("/gestion_services/ajout.jinja",titre_page = "ajout service",
