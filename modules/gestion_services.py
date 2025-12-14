@@ -79,7 +79,7 @@ def changement(id_change):
 
         if v_nom or v_local or v_descr:
             app.logger.debug("Les informations sont invalides, retour à la page de modification")
-            return render_template("changement.jinja", titre_page= "changement",
+            return render_template("/gestion_services/changement.jinja", titre_page= "changement",
                                    valide_nom = v_nom, valide_localisation = v_local,
                                      valide_description = v_descr)
         
@@ -94,11 +94,11 @@ def changement(id_change):
         
         app.logger.debug(f"Service {id_change} mis à jour avec succès")
         flash('Changement réussi avec succès')
-        return redirect("/merci_modif", code=303)
+        return redirect("/", code=303)
 
     retour = bd.get_service(id_change)
     categorie = bd.get_categories()
-    return render_template("changement.jinja", service=retour, categorie=categorie)
+    return render_template("/gestion_services/changement.jinja", service=retour, categories=categorie)
 
 @bp_gestion_services.route("/ajout", methods=['GET', 'POST'])
 def ajout():

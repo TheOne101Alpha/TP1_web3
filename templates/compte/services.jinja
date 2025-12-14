@@ -2,7 +2,7 @@
 {%block main%}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Tous mes services</h1>
-    <h1>{{session['credit']}}$</h1>
+    <h1>Crédit : {{session['credit']}}$</h1>
 </div>
 <div class="d-flex flex-wrap gap-3 justify-content-around">
     {% for service in lesservices %}
@@ -11,8 +11,8 @@
         <div class="card-body">
             <p class="h2 card-title">{{service["titre"]}}</p>
             <img class="card-text" src="../static/placeholder.png" alt="image placeholder">
-            <p class="card-text">{{service["(SELECT nom_categorie FROM `categories` WHERE categories.id_categorie = services.id_categorie)"]}} <br> {{service["description"]}} <br> localisation: {{service["localisation"]}}</p>
-            <a href="{%if 'id' not in session %} /compte {%else%} {{url_for('changement', id_change=services['id_service'] )}} {%endif%}" class="text-decoration-none w-25"><div class="bg-info text-white h3 inline text">Modifier le service</div></a>
+            <p class="card-text">{{service["nom_categorie"]}} <br> {{service["description"]}} <br> localisation: {{service["localisation"]}}</p>
+            <a href="{{url_for('gestion_services.changement', id_change=service['id_service'] )}}" class="text-decoration-none w-25"><div class="bg-info text-white h3 inline text">Modifier le service</div></a>
         </div>
     </div>
     {% endfor %}

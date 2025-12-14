@@ -105,7 +105,6 @@ def get_service(id_service):
 
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
-
             curseur.execute('SELECT ser.id_service, cat.nom_categorie, ser.date_creation, ' \
             'ser.titre, ser.actif, ser.description, ser.cout, ser.proprietaire,' \
             ' ser.localisation, ser.locataire FROM services ser INNER JOIN' \
