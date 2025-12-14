@@ -98,7 +98,7 @@ def changement(id_change):
     
     retour = bd.get_service(id_change)
     categorie = bd.get_categories()
-    return render_template("/gestion_services/changement.jinja", service=retour, categories=categorie)
+    return render_template("/gestion_services/changement.jinja" , service=retour, categories=categorie)
 
 @bp_gestion_services.route("/ajout", methods=['GET', 'POST'])
 def ajout():
