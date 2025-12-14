@@ -91,7 +91,7 @@ def services_compte(id_compte):
     """retourne tous les services du compte si il n'est pas admin"""
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
-            curseur.execute('SELECT * FROM service WHERE proprietaire=%(id)s',{'id':id_compte})
+            curseur.execute('SELECT * FROM services WHERE proprietaire=%(id)s',{'id':id_compte})
             compte = curseur.fetchone()
             return compte
 
