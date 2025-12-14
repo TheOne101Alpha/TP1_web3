@@ -28,10 +28,9 @@ def index():
 @bp_gestion_services.route('/details/<int:id_service>')
 def details(id_service):
     """Affiche un service en particulier"""
-
     proprietaire = False
-    disponible = False
     retour = bd.get_service(id_service)
+    print(retour)
     if not retour:
         abort(404)
 
@@ -42,8 +41,7 @@ def details(id_service):
         disponible = True
 
     return render_template('/gestion_services/details.jinja',
-                           item=retour, proprietaire=proprietaire,
-                             offert=disponible)
+                           item=retour, proprietaire=proprietaire)
 
 
 @bp_gestion_services.route('/changement/<int:id_change>', methods=['GET', 'POST'])
@@ -88,7 +86,7 @@ def changement(id_change):
 @bp_gestion_services.route("/ajout", methods=['GET', 'POST'])
 def ajout():
     """ajoute un nouveau service dans la bd"""
-    categories = []
+    categories = bd.get_categories()
 
     v_nom = ""
     v_local=""
@@ -100,6 +98,7 @@ def ajout():
     categorie = request.form.get("choix_categorie", default=None, type=int)
     actif = request.form.get("actif_service", default= 0, type=int)
     cout = request.form.get('cout', default=0, type=int)
+
     if request.method == 'POST':
         if reg_html.fullmatch(nom) or len(nom) < 1 or len(nom) > 50:
             v_nom = "is-invalid"
@@ -116,7 +115,7 @@ def ajout():
                                      valide_description = v_descr, titre = nom,
                                      local=localisation, description=description,cout = cout)
         # Sinon ajoute les données à la bd à l'aide de INSERT
-        if bd.add_service(nom, description, localisation, datetime.now, categorie, actif, cout):
+        if bd.add_service(session['id'], nom, description, localisation, datetime.now(), categorie, actif, cout):
             flash('Ajout réussi avec succès')
             return redirect("/", code=303)
 

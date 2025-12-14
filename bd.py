@@ -5,15 +5,16 @@ import hashlib
 import types
 import contextlib
 import mysql.connector
+import os
 
 @contextlib.contextmanager
 def creer_connexion():
     """Pour créer une connexion à la BD"""
     conn = mysql.connector.connect(
-        user="garneau",
-        password="qwerty_123",
-        host="127.0.0.1",
-        database="services_particuliers",
+        user=os.getenv("BD_Utilisateur"),
+        password=os.getenv("BD_Mdp"),
+        host=os.getenv("BD_Serveur"),
+        database=os.getenv("BD_Nom_Schema"),
         raise_on_warnings=True
     )
 
@@ -51,11 +52,13 @@ def get_compte(nom, mdp):
         
 def add_compte(nom, mdp, role):
     """Ajoute un utilisateur à la base de données"""
+    print('Les infromation sont:', nom, mdp, role)
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute('INSERT IGNORE INTO compte VALUES(NULL, %(nom)s,'
             '%(mdp)s,%(role)s, 0)' ,{'nom':nom, 'mdp':mdp, 'role':role})
             conn.commit()
+            print('nombre de compte ajouté:', curseur.rowcount)
 
 
 def get_comptes():
@@ -73,6 +76,7 @@ def delete_compte(id_compte):
         with conn.get_curseur() as curseur:
             curseur.execute('DELETE FROM compte WHERE `id_compte` = %(id)s', {'id': id_compte})
             conn.commit()
+            return bool(curseur.rowcount > 0)
 
 def id_exist(id_compte):
     """retourne un bool si le compte existe ou non"""
@@ -109,7 +113,7 @@ def get_service(id_service):
             'ser.titre, ser.actif, ser.description, ser.cout, ser.proprietaire,' \
             ' ser.localisation, ser.locataire FROM services ser INNER JOIN' \
             ' categories cat ON cat.id_categorie = ser.id_categorie ' \
-            'WHERE ser.id_service =%(id)s', {'id': id_service})
+            'WHERE ser.id_service =%(id)s ORDER BY ser.date_creation', {'id': id_service})
             retour = curseur.fetchone()
 
     return retour
@@ -119,10 +123,8 @@ def get_services():
     retour = []
     with creer_connexion() as connexion:
         with connexion.get_curseur() as curseur:
-            curseur.execute("SELECT id_service, (SELECT nom_categorie FROM " \
-            "`categories` WHERE categories.id_categorie " \
-            "= services.id_categorie), titre, localisation, " \
-            "description FROM `services` ORDER BY services.date_creation")
+            curseur.execute("SELECT s.id_service, c.nom_categorie, s.titre, s.localisation, " \
+            "s.description, s.id_categorie FROM `services` s INNER JOIN `categories` c ON c.id_categorie = s.id_categorie ORDER BY s.date_creation")
             retour = curseur.fetchall()
     return retour
 
@@ -138,15 +140,16 @@ def get_services_compte(id_compte):
             retour = curseur.fetchall()
     return retour
 
-def add_service(nom, description, localisation, date, categorie, actif, cout):
+def add_service(id_compte,nom, description, localisation, date, categorie, actif, cout):
     """Permet d'ajouter un service"""
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute(
-                'INSERT INTO services VALUES (NULL,%(categorie_id)s,%(letitre)s,'
+                'INSERT INTO services VALUES (NULL,%(categorie_id)s,%(id_compte)s,%(letitre)s,'
                 '%(ladescription)s,%(lalocalisation)s,%(ladate)s,'
-                '%(si_actif)s,%(lecout)s, NULL)',
+                '%(si_actif)s,%(lecout)s, NULL, NULL)',
                 {
+                    'id_compte': id_compte,
                     'letitre': nom,
                     'ladescription': description,
                     'lalocalisation': localisation,
@@ -157,9 +160,7 @@ def add_service(nom, description, localisation, date, categorie, actif, cout):
                 }
             )
             conn.commit()
-            return True
-
-    return False
+            return bool(curseur.rowcount > 0)
 
 def get_categories():
     """Retourne toutes les catégories"""

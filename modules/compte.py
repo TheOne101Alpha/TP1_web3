@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from flask import Flask, render_template, request, abort, redirect, Blueprint, session, url_for, flash
+from flask import Flask, render_template, request, abort, redirect, Blueprint, session, url_for, flash, jsonify
 import bd
 
 bp_compte = Blueprint('compte', __name__)
@@ -27,12 +27,6 @@ def authen():
     nom = request.form.get('nom', type=str, default='')
     mdp = bd.hacher_mdp(request.form.get('mdp', type=str, default=''))
 
-    print("Plain entered:", request.form.get('mdp'))
-    print('the name: ' , request.form.get('nom'))
-    print("Hash computed:", mdp)
-
-    # if 'nom' not in session:
-    #     return render_template('compte/authentifier.jinja')
     if request.method == 'POST':
         compte = bd.get_compte(nom, mdp)
         print(compte)
@@ -56,31 +50,38 @@ def deconnexion():
     session.clear()
     return redirect('/')
 
-@bp_compte.route('/creation', methods=['get', 'post'])
+@bp_compte.route('/creation', methods=['GET', 'POST'])
 def creation():
     """Affiche la page de création de compte"""
-    nom = request.form.get('mail', type=str)
-    mdp = request.form.get('mdp', type=str)
-    mdp_hach = bd.hacher_mdp(mdp)
-    role = request.form.get('role', type=str)
-
     if request.method == 'POST':
-        if not nom or len(nom) < 8 or is_valideMAIL(nom):
-            flash('le MAIL est invalide', 'error')
-            return render_template('compte/creation.jinja')
 
-        if not mdp or len(mdp) < 8 or is_valideMDP(mdp):
+        nom = request.form.get('mail', type=str)
+        mdp = request.form.get('mdp', type=str)
+        mdp_hach = bd.hacher_mdp(mdp)
+        role = request.form.get('role', type=str)
+
+        valide = True
+
+        if not nom or len(nom) < 8 or not is_valideMAIL(nom):
+            flash('le mail est invalide', 'error')
+            valide = False
+
+        if not mdp or len(mdp) < 8 or not is_valideMDP(mdp):
             flash('le mot de passe est invalide (1 majuscule, 1 minuscule, des chiffres)', 'error')
+            valide = False
+            
+        if not valide:
             return render_template('compte/creation.jinja')
 
+        bd.add_compte(nom,mdp_hach,role)
         compte = bd.get_compte(nom, mdp_hach)
-        if not compte:
-            bd.add_compte(nom,mdp_hach,role)
-            session.clear()
-            session.permanent = True
-            session["nom"] = nom
-            session["role"] = role
-            redirect('/', code=302)
+        session.clear()
+        session.permanent = True
+        session["id"] = compte["id_compte"]
+        session["role"] = role
+        session["credit"] = compte["credit"]
+        return redirect('/', code=302)
+    print('affichage de la page de création de compte')
     return render_template('compte/creation.jinja')
 
 @bp_compte.route("/liste")
@@ -93,17 +94,8 @@ def liste():
     comptes = bd.get_comptes()
     return render_template('compte/liste.jinja', lescomptes=comptes)
 
-@bp_compte.route("/suppression/<int:id>")
-def suppr(id):
-    """Supprime un compte et affiche la liste mis à jour"""
-    if id > 0:
-        bd.delete_compte(id)
-        return render_template('compte/liste.jinja', lescomptes=bd.get_comptes())
-    return abort(404)
-
-
 def is_valideMDP(chaine):
-    """check si la cahine en entré respecte le paterne d'un mot de passe"""
+    """check si la chaine en entré respecte le paterne d'un mot de passe"""
     paterne = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$'
     return bool(re.match(paterne, chaine))
 

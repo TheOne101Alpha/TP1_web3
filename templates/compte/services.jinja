@@ -1,6 +1,9 @@
 {% extends "base.jinja"%}
 {%block main%}
-<h1>Tous les services</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Tous mes services</h1>
+    <h1>{{session['credit']}}$</h1>
+</div>
 <div class="d-flex flex-wrap gap-3 justify-content-around">
     {% for service in lesservices %}
     <div class="card taille">

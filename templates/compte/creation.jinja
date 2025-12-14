@@ -1,10 +1,14 @@
 {%extends 'base.jinja'%}
+
+{%block link%}
+<script src="{{url_for('static', filename='js/validemail.js')}}"></script>
+{%endblock%}
 {%block main%}
 <h1> Création de compte </h1>
 
 <div class="container">
     <div class="row">
-        <div class="col-2">
+        <div class="col-4">
             {% with messages = get_flashed_messages(with_categories=True)%}
                 {%if messages %}
                     <ul>
@@ -16,10 +20,10 @@
             {%endwith%}
         </div>
 
-        <div class="col-10">
-            <form action="/" method="post" class="">
+        <div class="col-8">
+            <form action="" method="post" class="" id="aForm">
                 <div>
-                    <input type="text" name="nom" id="nom" class="text-center w-50 h3" placeholder="mail / nom">
+                    <input type="text" name="mail" id="mail" class="text-center w-50 h3" placeholder="mail / nom">
                     <div class="invalid-feedback">Le nom est obligatoire</div>
                 </div>
                 <div>
@@ -27,7 +31,7 @@
                     <div class="invalid-feedback">Le nom est obligatoire</div>
                 </div>
                 <div>
-                    <select name="role" id="role" required disabled class="w-50 h2">
+                    <select name="role" id="role" required class="w-50 h2">
                         <option value="utilisateur" class="text-center">utilisateur</option>
                     </select>
                 </div>
@@ -35,6 +39,7 @@
             </form>
         </div>
     </div>
+    <div class="hidden" id="message-mail"></div>
 </div>
 
 {%endblock%}

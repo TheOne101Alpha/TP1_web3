@@ -52,4 +52,38 @@ form div input {
 
 img {
   max-width: 100%;
+}
+
+.sug {
+  position: absolute;
+  border: 1px solid black;
+  width: 100%;
+  background-color: rgba(43, 40, 40, 0.174);
+}
+.sug li {
+  text-decoration: none;
+  list-style: none;
+}
+
+.search {
+  position: relative;
+  width: 350px;
+}
+
+.corner {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+
+.erreur {
+  background-color: red;
+}
+
+.valide {
+  background-color: green;
+}
+
+.hidden {
+  display: none;
 }/*# sourceMappingURL=style.css.map */

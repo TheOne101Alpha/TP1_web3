@@ -1,15 +1,17 @@
 """TP2 WEB"""
 
 import re
+import os
+from dotenv import load_dotenv
+from flask import Flask, render_template, request, abort, redirect, session
 from datetime import datetime
-from flask import Flask, render_template, request, abort, redirect, session, flash
 from modules.compte import bp_compte
-import bd
-
+from modules.api import bp_api
 from modules.gestion_services import bp_gestion_services
 
 
-
+if not os.getenv('BD_Utilisateur'):
+    load_dotenv('.env')
 
 
 reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
@@ -17,22 +19,14 @@ reg_html = re.compile(r"(<(.*)>.*?|<(.*) />)")
 app = Flask(__name__)
 app.register_blueprint(bp_compte, url_prefix = '/compte')
 app.register_blueprint(bp_gestion_services, url_prefix = '/gestion_services')
+app.register_blueprint(bp_api, url_prefix = '/api')
 
-app.secret_key = '6588ecc079c1f23d71a5f0f67ece4e7cf0cc8681df20e775ded64740cef3d462'
+app.secret_key = os.getenv('Secret_Key')
 
 @app.route('/')
 def base():
     """Affiche la page d'acceuil du site"""
-    retour = []
-    with bd.creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            curseur.execute("SELECT cat.nom_categorie,ser.id_service," \
-            " ser.titre, ser.description, ser.cout, ser.localisation " \
-            "FROM services ser INNER JOIN categories cat ON " \
-            "cat.id_categorie = ser.id_service ORDER BY ser.date_creation LIMIT 5")
-            retour = curseur.fetchall()
-
-    return render_template('acceuil.jinja',  titre_page = "Acceuil", langue = "fr_CA", items=retour)
+    return render_template('acceuil.jinja',  titre_page = "Acceuil", langue = "fr_CA")
 
 
 

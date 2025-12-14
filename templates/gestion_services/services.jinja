@@ -1,10 +1,12 @@
 {% extends "base.jinja"%}
+{%block link%}
+<script src="{{url_for('static', filename='js/listeservices.js')}}"></script>
+{%endblock%}
 {%block main%}
 <h1>Tous les services</h1>
-<div class="d-flex flex-wrap gap-3 justify-content-around">
-    {% for service in lesservices %}
+<div id="liste" class="d-flex flex-wrap gap-3 justify-content-around">
+    {# {% for service in lesservices %}
     <div class="card taille col-md-6">
-        {# <div class="card-header">Derniers services</div> #}
         <div class="card-body">
             <p class="h2 card-title">{{service["titre"]}}</p>
             <img class="card-text" src="../static/placeholder.png" alt="image placeholder">
@@ -12,6 +14,6 @@
             <a href="details/{{service["id_service"]}}" class="text-decoration-none w-25"><div class="bg-info text-white h3 inline text">Detais du service</div></a>
         </div> 
     </div>
-    {% endfor %}
+    {% endfor %}    #}
 </div>
 {%endblock%}

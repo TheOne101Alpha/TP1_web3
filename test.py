@@ -8,3 +8,5 @@ from bd import hacher_mdp
 # print(repr('admin'))
 
 print(repr('random_mdp'))
+
+print(hacher_mdp('AdminGarneau2024'))
