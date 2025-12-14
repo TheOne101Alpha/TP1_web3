@@ -5,15 +5,6 @@
 {%block main%}
 <h1>Tous les services</h1>
 <div id="liste" class="d-flex flex-wrap gap-3 justify-content-around">
-    {# {% for service in lesservices %}
-    <div class="card taille col-md-6">
-        <div class="card-body">
-            <p class="h2 card-title">{{service["titre"]}}</p>
-            <img class="card-text" src="../static/placeholder.png" alt="image placeholder">
-            <p class="card-text">{{service["(SELECT nom_categorie FROM `categories` WHERE categories.id_categorie = services.id_categorie)"]}} <br> {{service["description"]}} <br> localisation: {{service["localisation"]}}</p>
-            <a href="details/{{service["id_service"]}}" class="text-decoration-none w-25"><div class="bg-info text-white h3 inline text">Detais du service</div></a>
-        </div> 
-    </div>
-    {% endfor %}    #}
+    
 </div>
 {%endblock%}
