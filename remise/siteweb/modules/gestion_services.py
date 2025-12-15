@@ -42,10 +42,10 @@ def details(id_service):
         app.logger.warning(f"Le service {id_service} n'existe pas, abort 404")
         abort(404)
 
-    if retour['proprietaire'] in session:
+    if retour["proprietaire"] == session.get('id', default=0):
         app.logger.debug(f"L'utilisateur {session.get('id')} est le propriétaire du service {id_service}")
         proprietaire = True
-
+    
     app.logger.info(f"Affichage des détails du service {id_service}")
     return render_template('/gestion_services/details.jinja',
                            item=retour, proprietaire=proprietaire)
@@ -144,7 +144,7 @@ def ajout():
     return render_template("/gestion_services/ajout.jinja",titre_page = "ajout service",
                                     liste_categorie = categories)
 
-@bp_gestion_services.route('/supprimer/<int:id_service>', methods=['POSt'])
+@bp_gestion_services.route('/supprimer/<int:id_service>', methods=['GET'])
 def supprimer(id_service):
     """Permet de supprimer un service"""
     app.logger.info(f"Suppression du service {id_service} demandée")

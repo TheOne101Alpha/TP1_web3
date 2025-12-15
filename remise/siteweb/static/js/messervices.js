@@ -56,7 +56,7 @@ async function SupprimerService(id_service){
     if(reponse){
         affichageServicesUtilisateur();
         return;
-    }   
+    }
 }
 
 window.addEventListener("load", async function(){

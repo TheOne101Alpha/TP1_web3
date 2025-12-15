@@ -62,3 +62,22 @@ def check_date(id_service):
     service = bd.get_service(id_service)
     app.logger.debug(f"Service {id_service} récupéré via l'API")
     return jsonify(bool(service.get('locataire') is None))
+
+@bp_api.route('/services/supprimer/<int:id_service>', methods=['GET'])
+def supprimer_service(id_service):
+    """Supprime un service"""
+    app.logger.info(f"Suppression du service {id_service} demandée via l'API")
+    retour = bd.delete_service(id_service)
+    if(retour):
+        app.logger.debug(f"Service {id_service} supprimé avec succès via l'API")
+    else:
+        app.logger.error(f"Erreur lors de la suppression du service {id_service} via l'API")
+    return jsonify(retour)
+
+@bp_api.route('/services/mes_services/<int:id_utilisateur>', methods=['GET'])
+def mes_services(id_utilisateur):
+    """Retourne les services de l'utilisateur connecté"""
+    app.logger.info(f"Récupération des services de l'utilisateur {id_utilisateur} via l'API")
+    services = bd.services_compte(id_utilisateur)
+    app.logger.debug(f"{len(services)} services récupérés pour l'utilisateur {id_utilisateur} via l'API")
+    return jsonify(services)
