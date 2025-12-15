@@ -1,0 +1,16 @@
+{%extends 'base.jinja'%}
+{%block main%}
+<h1> AUTHENTIFICATION </h1>
+<form action="/compte/connexion" method="POST">
+    <div>
+        <input type="text" name="nom" id="nom" class="text-center w-50 h3" placeholder="mail">
+    </div>
+    <div>
+        <input type="text" name="mdp" id="mdp" class="text-center w-50 h2" placeholder="mot de passe">
+    </div>
+    <div class="d-flex align-content-between justify-content-around">
+        <input type="submit" value="Connexion">
+        <a href="/compte/creation">CREER UN COMPTE</a>
+    </div>
+</form>
+{%endblock%}

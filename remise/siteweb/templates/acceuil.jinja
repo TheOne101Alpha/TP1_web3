@@ -1,0 +1,9 @@
+{% extends "base.jinja" %}
+{% block main %}
+<h1>Derniers services modifiés</h1>
+<div id="acceuil_liste" class="d-flex flex-wrap gap-3 justify-content-around">
+</div>
+{% endblock %}
+{% block link %}
+<script src="{{url_for('static', filename='js/BackEnd.js')}}"></script>
+{% endblock %}

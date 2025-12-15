@@ -1,0 +1,95 @@
+.container-c {
+	width: 90%;
+	max-width: 1200px;
+	margin: 0 auto;
+	align-items: center;
+}
+
+a:hover, main a:hover{
+	background-color: white;
+}
+
+p, label{
+	font-size: 20px;
+	color: black;
+}
+
+footer, header{
+	height: 20%;
+}
+
+header{
+	height: 50px;
+	background-color: rgb(192, 192, 255);
+
+	a{
+		color: black;
+	}
+}
+
+main {
+	height: 60%;
+	.taille {
+		width: 42%;
+	}
+}
+
+
+footer{
+	background-color: rgb(192, 192, 255);
+}
+
+
+
+label{
+	margin-right: 10px;
+}
+
+form div{
+	margin-top: 40px;
+	width: 100%;
+	input{
+		width: 30%;
+		margin-left: 40px;
+	}
+}
+
+img{
+	max-width: 100%;
+}
+
+.sug{
+	position:absolute;
+	border: 1px solid black;
+	width: 100%;
+	background-color: rgba(43, 40, 40, 0.174);
+	li{
+		text-decoration: none;
+		list-style: none;
+	}
+}
+
+.search{
+	position: relative;
+	width: 350px;
+}
+
+
+
+.corner{
+	position: fixed;
+	bottom:20px;
+	left:20px;
+}
+
+.erreur{
+	background-color: red;
+}
+
+.valide{
+	background-color: green;
+}
+
+.hidden{
+	display: none;
+}

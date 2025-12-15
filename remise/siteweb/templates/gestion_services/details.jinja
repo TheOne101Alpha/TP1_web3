@@ -1,0 +1,36 @@
+{% extends "base.jinja" %}
+{%block link%}
+<script src="{{url_for('static', filename='js/reservation.js')}}"></script>
+{%endblock%}
+{% block main %}
+<div class="container">
+    <div class="row justify-content-center align-middle gap-4">
+        <section class="col-4 border"> 
+            <img src="../../static/placeholder.png">
+            <h1>Prix: {{item["cout"]}}$</h1>
+        </section>
+        <section class="col-6 border"> 
+            {%if item["actif"] < 1%}
+            <h1>{{item["titre"]}} <span>(non-actif)</span> </h1>
+            {% else %}
+            <h1>{{item["titre"]}} <span class="text-success">(actif)</span> </h1>
+            {% endif %}
+            <p class="h3">Localisation: {{item["localisation"]}}</p>
+            <p class="h3">Catégorie: {{item["nom_categorie"]}}</p>
+            <p>({{item["date_creation"]}})<br>{{item["description"]}}</p>
+            {%if proprietaire %}
+            <a href="{{ url_for('gestion_services.changement', id_service=item['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Modifier le service</a>
+            <a href="{{ url_for('gestion_services.supprimer', id_service=item['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Supprimer le service</a>
+            {%endif%}
+            {%if not proprietaire%}
+            <input type="date" id="service_date">
+            <a id="reserver" data-id_service="{{item['id_service']}}" href="{{ url_for('gestion_services.reserver', id_service=item['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Reserver le service</a>
+            {%endif%}
+            <div id="message" class="hidden erreur"></div>
+        </section>
+    </div>
+
+</div> 
+
+{% endblock %}
+
