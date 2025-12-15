@@ -37,10 +37,7 @@ async function ValidateMail(mail){
                 compteForm.removeEventListener("submit", () => stopsubmit());
             }
         }
-    }
-    else{
-        return;
-    }    
+    } 
 }
 
 function initialize(){

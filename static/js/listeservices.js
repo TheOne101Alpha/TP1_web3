@@ -1,13 +1,6 @@
 "use strict";
 const list = document.getElementById('liste');
 
-async function getmaxservice(){
-    const url = '/api/services/all_details';
-    const nb = await envoyerRequeteAjax(url, 'GET');
-    return nb.length;
-}
-
-
 let nombre = 0;
 let maxservice = 0;
 

@@ -144,7 +144,7 @@ def ajout():
     return render_template("/gestion_services/ajout.jinja",titre_page = "ajout service",
                                     liste_categorie = categories)
 
-@bp_gestion_services.route('/supprimer/<int:id_service>', methods=['POSt'])
+@bp_gestion_services.route('/supprimer/<int:id_service>', methods=['GET'])
 def supprimer(id_service):
     """Permet de supprimer un service"""
     app.logger.info(f"Suppression du service {id_service} demandée")
