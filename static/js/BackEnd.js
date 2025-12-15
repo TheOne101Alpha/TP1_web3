@@ -73,7 +73,7 @@ async function UpdateAcceuil(){
         information.innerHTML = `${data[nb]['nom_categorie']} <br> ${data[nb]['description']} <br> localisation: ${data[nb]['localisation']}` 
 
         let lien = document.createElement('a');
-        lien.href = `details/${data[nb]['id_service']}`;
+        lien.href = `/gestion_services/details/${data[nb]['id_service']}`;
         lien.classList.add('text-decoration-none', 'w-25');
 
         let info = document.createElement('div');
