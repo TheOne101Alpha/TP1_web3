@@ -42,10 +42,10 @@ def details(id_service):
         app.logger.warning(f"Le service {id_service} n'existe pas, abort 404")
         abort(404)
 
-    if retour['proprietaire'] in session:
+    if retour["proprietaire"] == session.get('id', default=0):
         app.logger.debug(f"L'utilisateur {session.get('id')} est le propriétaire du service {id_service}")
         proprietaire = True
-
+    
     app.logger.info(f"Affichage des détails du service {id_service}")
     return render_template('/gestion_services/details.jinja',
                            item=retour, proprietaire=proprietaire)

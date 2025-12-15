@@ -22,7 +22,7 @@
             <a href="{{ url_for('gestion_services.changement', id_service=item['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Modifier le service</a>
             <a href="{{ url_for('gestion_services.supprimer', id_service=item['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Supprimer le service</a>
             {%endif%}
-            {%if not proprietaire%}
+            {%if not proprietaire and session.get('id')%}
             <input type="date" id="service_date">
             <a id="reserver" data-id_service="{{item['id_service']}}" href="{{ url_for('gestion_services.reserver', id_service=item['id_service']) }}" class="text-decoration-none w-25 bg-info text-white h3 text">Reserver le service</a>
             {%endif%}
